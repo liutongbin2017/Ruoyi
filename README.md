@@ -28,3 +28,11 @@ npm run build:stage
 # 构建生产环境
 npm run build:prod
 ```
+## 流程图组件使用
+```bash
+# 引入组件
+npm install mind-map-example --save
+
+# 应用页面
+参照main.js views/index.vue 写法
+```
