@@ -27,11 +27,11 @@ export default {
     this.$bus.$on('execCommand', this.execCommand)
     // this.$bus.$on('export', this.export)
     this.$bus.$on('setData', this.setData)
-    // if (this.openTest) {
-    //   setTimeout(() => {
-    //     this.test()
-    //   }, 5000)
-    // }
+    if (this.openTest) {
+      setTimeout(() => {
+        this.test()
+      }, 5000)
+    }
   },
   methods: {
     getData() {
