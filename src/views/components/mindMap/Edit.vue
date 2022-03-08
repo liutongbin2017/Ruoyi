@@ -18,8 +18,18 @@ export default {
       mindMap: null,
       mindMapData: null,
       prevImg: '',
-      openTest: false
+      openTest: false,
+      nameList:[]
     }
+  },
+  watch:{
+      nameList: {
+        handler(oldval,newVal) {
+            console.log('liutongbin===watch',newVal,oldval);
+            this.$bus.$emit('execCommand','GET_ALL_TEXT', newVal)
+        },
+        deep: true
+      }
   },
   mounted() {
     this.getData()
@@ -27,17 +37,38 @@ export default {
     this.$bus.$on('execCommand', this.execCommand)
     // this.$bus.$on('export', this.export)
     this.$bus.$on('setData', this.setData)
+      // 新增自定义事件，导出回车更改text文本的方法
+    this.$bus.$on("enter_text_change",(node,text) => {
+      console.log('liutongbin===修改文本',node,text)
+    })
     if (this.openTest) {
       setTimeout(() => {
         this.test()
       }, 5000)
     }
+     // 新增自定义事件，导出回车更改text文本的方法
+    this.$bus.$on("enter_text_change",(node,text) => {
+      console.log('liutongbin===修改文本',node,text)
+    })
   },
   methods: {
     getData() {
       let storeData = getData()
       console.log('刘桐宾===初始化',getData())
       this.mindMapData = storeData
+      // 存储data数据中的name生成新的数组
+      this.newNameList(storeData.root)
+    },
+    newNameList(obj) {
+      if(obj && obj.data) {
+        this.nameList.push(obj.data.text)
+        if(obj.children.length > 0) {
+          for( let i = 0; i <  obj.children.length; i++) {
+            this.newNameList(obj.children[i])
+          }
+        }
+      }
+      console.log('liutongbin===storeData', this.nameList)
     },
     bindSaveEvent() {
       if (this.openTest) {
@@ -91,6 +122,7 @@ export default {
         'expand_btn_click',
         'svg_mousedown',
         'mouseup',
+        'enter_text_change',
       ].forEach((event) => {
         this.mindMap.on(event, (...args) => {
           this.$bus.$emit(event, ...args)

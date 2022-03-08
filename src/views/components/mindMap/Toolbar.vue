@@ -48,7 +48,7 @@
           :class="{
             disabled: activeNodes.length <= 0,
           }"
-          @click="$bus.$emit('execCommand', 'REMOVE_NODE')"
+          @click="deleteNode"
         >
           <span class="icon iconfont iconshanchu"></span>
           <span class="text">删除节点</span>
@@ -86,12 +86,32 @@ export default {
       this.backEnd = index <= 0
       this.forwardEnd = index >= len - 1
     });
+    // 监听点击与、或按钮事件
+    this.$bus.$on("expand_btn_click",(node) => {
+      console.log('liutongbin===expand_btn_click',node,node.nodeData,node.nodeData.data,node.nodeData.data.text)
+      let isClickText = node.nodeData.data.text
+      if(isClickText !== '') {
+        console.log('liutongbin===触发点击事件')
+        this.$bus.$emit('execCommand', 'SET_NODE_CHANGEBTN',node,!node.nodeData.data.isChangeBtn)
+      }
+    })
   },
+  methods:{
+    // 删除节点走接口，走弹窗
+    deleteNode() {
+      console.log('liutongbin===删除节点')
+      // then之后走this.$bus.$emit
+      this.$bus.$emit('execCommand', 'REMOVE_NODE')
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .toolbarContainer {
+    position: absolute;
+    top: 24%;
+    z-index: 1000 !important;
   .toolbar {
     display: flex;
     padding: 0 20px;
