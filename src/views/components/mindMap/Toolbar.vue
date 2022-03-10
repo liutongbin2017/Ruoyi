@@ -3,7 +3,7 @@
     <div class="toolbar">
       <!-- 节点操作 -->
       <div class="toolbarBlock">
-        <div
+        <!-- <div
           class="toolbarBtn"
           :class="{
             disabled: backEnd,
@@ -12,8 +12,8 @@
         >
           <span class="icon iconfont iconhoutui-shi"></span>
           <span class="text">回退</span>
-        </div>
-        <div
+        </div> -->
+        <!-- <div
           class="toolbarBtn"
           :class="{
             disabled: forwardEnd,
@@ -22,21 +22,31 @@
         >
           <span class="icon iconfont iconqianjin1"></span>
           <span class="text">前进</span>
+        </div> -->
+        <div
+          class="toolbarBtn"
+          :class="{
+            disabled: activeNodes.length <= 0 || hasRoot,
+          }"
+          @click="$bus.$emit('execCommand', 'INSERT_NODE', 'upInsert')"
+        >
+          <span class="icon iconfont iconjiedian"></span>
+          <span class="text">向上插入主事件</span>
         </div>
         <div
           class="toolbarBtn"
           :class="{
             disabled: activeNodes.length <= 0 || hasRoot,
           }"
-          @click="$bus.$emit('execCommand', 'INSERT_NODE')"
+          @click="$bus.$emit('execCommand', 'INSERT_NODE', 'downInsert')"
         >
           <span class="icon iconfont iconjiedian"></span>
-          <span class="text">插入同级节点</span>
+          <span class="text">向下插入主事件</span>
         </div>
         <div
           class="toolbarBtn"
           :class="{
-            disabled: activeNodes.length <= 0,
+            disabled: activeNodes.length <= 0 || isInsertChild,
           }"
           @click="$bus.$emit('execCommand', 'INSERT_CHILD_NODE')"
         >
@@ -46,7 +56,7 @@
         <div
           class="toolbarBtn"
           :class="{
-            disabled: activeNodes.length <= 0,
+            disabled: activeNodes.length <= 0 || isBankDelete,
           }"
           @click="deleteNode"
         >
@@ -77,9 +87,20 @@ export default {
         return node.isRoot;
       });
     },
+    isInsertChild() {
+      return this.activeNodes.find((node) => {
+        return node.layerIndex === 4;
+      });
+    },
+    isBankDelete() {
+      return this.activeNodes.find((node) => {
+        return node.nodeData.data.id === 0;
+      });
+    }
   },
   created() {
     this.$bus.$on("node_active", (...args) => {
+      console.log('liutongbin===node_active',args)
       this.activeNodes = args[1];
     });
     this.$bus.$on("back_forward", (index, len) => {
@@ -99,9 +120,13 @@ export default {
   methods:{
     // 删除节点走接口，走弹窗
     deleteNode() {
-      console.log('liutongbin===删除节点')
-      // then之后走this.$bus.$emit
-      this.$bus.$emit('execCommand', 'REMOVE_NODE')
+      console.log('liutongbin===删除节点',this.activeNodes[0].nodeData.data.id)
+      let isCanDeleteId = this.activeNodes[0].nodeData.data.id
+      if(isCanDeleteId !== 0) {
+        // then之后走this.$bus.$emit
+        this.$bus.$emit('execCommand', 'REMOVE_NODE')
+      }
+   
     }
   }
 };

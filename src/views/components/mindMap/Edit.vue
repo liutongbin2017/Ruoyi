@@ -46,10 +46,10 @@ export default {
         this.test()
       }, 5000)
     }
-     // 新增自定义事件，导出回车更改text文本的方法
-    this.$bus.$on("enter_text_change",(node,text) => {
-      console.log('liutongbin===修改文本',node,text)
-    })
+    //  // 新增自定义事件，导出回车更改text文本的方法
+    // this.$bus.$on("enter_text_change",(node,text) => {
+    //   console.log('liutongbin===修改文本',node,text)
+    // })
   },
   methods: {
     getData() {
@@ -169,7 +169,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .editContainer {
 
   .mindMapContainer {
@@ -179,5 +179,16 @@ export default {
     width: 100%;
     height: 500px;
   }
+}
+#tooTip-border:after {
+    position: absolute;
+    left: 4px;
+    bottom: -9px;
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 10px solid rgba(58, 63, 99, 0.7);
 }
 </style>
