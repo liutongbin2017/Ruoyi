@@ -19,9 +19,9 @@ const copyMindMapTreeData = (tree, root) => {
 
 export const getData = () => {
     let store = localStorage.getItem(SIMPLE_MIND_MAP_DATA)
-    // store = null
+    store = null
     if (store === null) {
-        console.log('liutongbin===getData',store)
+        console.log('liutongbin===getData',store,exampleData)
         return simpleDeepClone(exampleData)
     } else {
         try {

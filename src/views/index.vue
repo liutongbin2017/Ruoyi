@@ -9,8 +9,9 @@
     <el-row :gutter="20">
       <el-col :sm="24" :lg="12" style="padding-left: 20px">
         <h2>黑崎一护</h2>
-        
-        
+        <el-input v-model="input" placeholder="Please input" />
+        <el-select v-model="input" placeholder="Select">
+        </el-select>
       </el-col>
     </el-row>
     <el-divider />
@@ -36,6 +37,7 @@ export default {
     return {
       // 版本号
       version: "3.8.1",
+      input:''
     };
   },
   mounted(){
